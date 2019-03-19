@@ -13,7 +13,7 @@ constructor(props){
   super(props) ;
   this.state={
     cityName:"San Pedro Sula",
-    forcastDays:5,
+    numForecastDays:4,
     temp_c:0,
     isDay:false,
     text:"",
@@ -24,8 +24,8 @@ constructor(props){
 }
 
 updateWeather(){
-  const{cityName,forcastDays}= this.state;
-  const URL =`https://api.apixu.com/v1/forecast.json?key=${Weather_Key}&q=${cityName}&days=${forcastDays}`;
+  const{cityName,numForecastDays}= this.state;
+  const URL =`https://api.apixu.com/v1/forecast.json?key=${Weather_Key}&q=${cityName}&days=${numForecastDays}`;
   axios
   .get(URL)
   .then(res=>{
@@ -36,7 +36,9 @@ updateWeather(){
         isDay:data.current.is_day,
         text:data.current.condition.text,
         iconURL:data.current.condition.icon,
-        isloading:false })
+        isloading:false,
+        forecastdays:data.forecast.forecastday
+       })
 
     })
   .catch(err=>{
@@ -64,7 +66,7 @@ componentDidMount(){
 
   render() {
 
-    const{isloading,cityName,temp_c,isDay,text,iconURL}= this.state;
+    const{isloading,cityName,temp_c,isDay,text,iconURL,forecastdays}= this.state;
 
 
 
@@ -84,7 +86,7 @@ componentDidMount(){
       </div>
       )
     }
-    <div className="bottom-section"><BottomSection/></div>
+    <div className="bottom-section"><BottomSection forecastdays={forecastdays}/></div>
 
     </div>
 
